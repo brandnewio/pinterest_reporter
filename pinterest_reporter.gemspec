@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = PinterestReporter::VERSION
   spec.authors       = ["luki3k5" "mpikula"]
   spec.email         = ["luki3k5" "mariusz.pikula@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{TODO: This gem allows to easily get data from Pinterest}
+  spec.summary       = %q{TODO: This gem allows to easily get data from Pinterest}
   spec.homepage      = ""
   spec.license       = "MIT"
 
