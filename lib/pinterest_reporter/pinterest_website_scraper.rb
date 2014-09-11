@@ -209,6 +209,14 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     return board_data
   end
 
+  def get_profile_picture(profile_name)
+    html      = PinterestWebsiteCaller.new.get_profile_page(profile_name)
+    page      = Nokogiri::HTML(html)
+    return nil if !page.css("div[class~=errorMessage]").empty?
+    profile_picture = page.css("div[class~=profileImage]").css('img').attribute('src').to_s
+    profile_picture
+  end
+
   def get_board_information(html)
     board_page      = Nokogiri::HTML(html)
 
@@ -218,7 +226,11 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     description     = board_page.xpath("/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/p/text()").to_s.strip
     followers_count = board_page.content.match(/"followers": "\d+"/).to_s.split(':')[1].strip.tr("\"","")
     pins_count      = board_page.content.match(/"pinterestapp:pins": "\d+"/).to_s.split(':')[2].strip.tr("\"","")
-    return {"owner_name" => full_name, "board_name" => board_name, "description" => description, "pins_count" => pins_count, "followers_count" => followers_count}
+    return { "owner_name" => full_name,
+      "board_name" => board_name,
+      "description" => description,
+      "pins_count" => pins_count,
+      "followers_count" => followers_count}
   end
 
   def get_info_and_links(profile_name)

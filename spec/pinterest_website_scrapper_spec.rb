@@ -54,7 +54,7 @@ describe PinterestWebsiteScraper do
   let(:expected_result_from_profile_page_scraping) do
     {
       "profile_name"        => "Ryan Sammy",
-      "followers_count"     => "904",
+      "followers_count"     => "911",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
       "pins_count"          => "1794",
@@ -69,7 +69,7 @@ describe PinterestWebsiteScraper do
       "board_name"      => "BMW",
       "description"     => "The cars I dream about.",
       "pins_count"      => "241",
-      "followers_count" => "513"
+      "followers_count" => "515"
     }
   end
 
@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "48315",
-      "followers_count" => "24088"
+      "pins_count"      => "48627",
+      "followers_count" => "24308"
     }
   end
 
@@ -115,6 +115,13 @@ describe PinterestWebsiteScraper do
     it 'fetches media files from pinterest board' do
         result = subject.get_latest_pictures_from_board(followben_board)
         expect(result).not_to be(nil)
+    end
+  end
+
+  describe 'get profile picture' do
+    it 'returns link to profile picture' do
+      result = subject.get_profile_picture('ryansammy')
+      expect(result).to eq('http://media-cache-ec0.pinimg.com/avatars/ryansammy_1365793703_140.jpg')
     end
   end
 
@@ -164,12 +171,12 @@ describe PinterestWebsiteScraper do
 
     it 'should not process more followers then passed limit' do
         result = subject.get_followers(ryansammy_followers_page, 1000, 20)
-        expect(result.size).to eq(8)
+        expect(result.size).to eq(10)
     end
 
     it 'should start processing from second page of followers list' do
         result = subject.get_followers_for_cache(ryansammy_followers_page, 10000, 200, 2)
-        expect(result['followers_list'].size).to eq(14)
+        expect(result['followers_list'].size).to eq(16)
     end
 
     it 'should provide all links and infos' do
@@ -179,7 +186,7 @@ describe PinterestWebsiteScraper do
         "location" => "Berkeley, CA",
         "facebook" => "https://www.facebook.com/ryan.sammy",
         "twitter" => "",
-        "followers_count" => "904",
+        "followers_count" => "911",
         "pins" => "1794",
         "profile_name" => "Ryan Sammy"
       }
