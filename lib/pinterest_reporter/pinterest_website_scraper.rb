@@ -213,6 +213,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     html      = PinterestWebsiteCaller.new.get_profile_page(profile_name)
     page      = Nokogiri::HTML(html)
     return nil if !page.css("div[class~=errorMessage]").empty?
+    return nil if page.css("div[class~=profileImage]").css('img').empty?
     profile_picture = page.css("div[class~=profileImage]").css('img').attribute('src').to_s
     profile_picture
   end
