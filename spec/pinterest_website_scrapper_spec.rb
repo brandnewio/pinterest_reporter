@@ -94,8 +94,7 @@ describe PinterestWebsiteScraper do
     end
 
     it 'returns list of all boards for profile page' do
-      result = subject.get_pinterest_boards(maryannrizzo_web_profile)
-        expect(subject.get_pinterest_boards(maryannrizzo_web_profile).size).
+      expect(subject.get_pinterest_boards(maryannrizzo_web_profile).size).
           to eq(273)
     end
 

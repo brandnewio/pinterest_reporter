@@ -157,9 +157,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     board_data = Hash.new
     content = page.content
     scrubbed_user = JSON.parse(content.match(/\{"gaAccountNumbers":.*\}/).to_s)
-    #puts "#{scrubbed_user['tree']['children'][3]['children'][3]['children'][0]['children'][0]['children'][0]['children']}"
     json_boards = scrubbed_user['tree']['children'][3]['children'][3]['children'][0]['children'][0]['children'][0]['children']
-    #puts "#{json_boards}"
     json_boards.each do |board|
       partial_board_data = board['children'][0]['options']
       if board['children'][0]['options']['title_text'].nil?
@@ -169,7 +167,6 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
       board_url =  partial_board_data['url']
       board_name = partial_board_data['title_text'].strip
       board_data[board_name] = {"id" => board_id, "url" => board_url}
-      #puts "board_data: #{board_data}"
     end
     @conn = Faraday.new(url: WEB_FETCH_BOARDS_URL) do |faraday|
       faraday.request  :url_encoded
@@ -196,7 +193,6 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
         req.headers['X-Requested-With'] = 'XMLHttpRequest'
       end
       content = resp.body
-      #puts "#{content}"
       scrubbed_user = JSON.parse("{#{resp.body.match(/"tree".*}},/).to_s.chop}")
       json_boards = scrubbed_user['tree']['children']
       json_boards.each do |board|
