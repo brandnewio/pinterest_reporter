@@ -9,7 +9,9 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     page       = Nokogiri::HTML(html)
     followers_list = []
     content = page.content
-    options = JSON.parse(content.match(/{"username": "\w+?", "bookmarks":[^-]*?\]}/).to_s)
+    content_to_parse = content.match(/{"username": "\w+?", "bookmarks":[^-]*?\]}/).to_s
+    return nil if content_to_parse.blank?
+    options = JSON.parse(content_to_parse)
     app_version = content.match(/"app_version": ".*?"/).to_s.split(":")[1].strip.match(/[^"]+/)
     if starting_page == 1
       followers = page.css("a[class=userWrapper]")
@@ -213,6 +215,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     html      = PinterestWebsiteCaller.new.get_profile_page(profile_name)
     page      = Nokogiri::HTML(html)
     return nil if !page.css("div[class~=errorMessage]").empty?
+    return nil if page.css("div[class~=profileImage]").css('img').empty?
     profile_picture = page.css("div[class~=profileImage]").css('img').attribute('src').to_s
     profile_picture
   end
