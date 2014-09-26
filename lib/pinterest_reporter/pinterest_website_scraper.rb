@@ -319,6 +319,9 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     page  =  Nokogiri::HTML(html)
     return nil if !page.css("div[class~=errorMessage]").empty?
     profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
+    if profile_name.empty?
+      profile_name = page.css("h1[class~=userProfileHeaderName]").text.strip
+    end
     followers_count = page.css("div[class~=FollowerCount]").text.to_s.strip.split[0].tr(",", "")
     info_bar = page.css("div[class~=UserInfoBar]").css("div[class~=tabs]").text.to_s.strip.tr("\n"," ")
     if info_bar.empty?
