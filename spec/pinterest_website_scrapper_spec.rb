@@ -54,11 +54,11 @@ describe PinterestWebsiteScraper do
   let(:expected_result_from_profile_page_scraping) do
     {
       "profile_name"        => "Ryan Sammy",
-      "followers_count"     => "916",
+      "followers_count"     => "915",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
       "pins_count"          => "1794",
-      "likes_count"         => "278",
+      "likes_count"         => "276",
       "followed"            => "526"
     }
   end
@@ -69,7 +69,7 @@ describe PinterestWebsiteScraper do
       "board_name"      => "BMW",
       "description"     => "The cars I dream about.",
       "pins_count"      => "241",
-      "followers_count" => "519"
+      "followers_count" => "518"
     }
   end
 
@@ -78,9 +78,26 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "48784",
-      "followers_count" => "24532"
+      "pins_count"      => "48787",
+      "followers_count" => "24571"
     }
+  end
+
+  before(:each) do
+    PinterestWebsiteCaller.any_instance.stub(:website_connection).and_return(
+      Faraday.new(url: PinterestInteractionsBase::WEB_BASE_URL) do |faraday|
+        faraday.request  :url_encoded
+        faraday.headers['Connection'] = 'keep-alive'
+        faraday.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
+        faraday.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+        faraday.headers['Accept-Language'] = 'en-US,en;q=0.8,pl;q=0.6'
+        faraday.headers['Referer'] = 'https://www.google.pl/'
+        faraday.headers['Dnt'] = '1'
+        faraday.use FaradayMiddleware::FollowRedirects
+        faraday.use FaradayMiddleware::FollowRedirects, limit: 5
+        faraday.adapter  :net_http
+      end
+    )
   end
 
   describe '#scrape_data_for_profile_page' do
@@ -171,12 +188,12 @@ describe PinterestWebsiteScraper do
 
     it 'should not process more followers then passed limit' do
         result = subject.get_followers(ryansammy_followers_page, 1000, 20)
-        expect(result.size).to eq(7)
+        expect(result.size).to eq(8)
     end
 
     it 'should start processing from second page of followers list' do
         result = subject.get_followers_for_cache(ryansammy_followers_page, 10000, 200, 2)
-        expect(result['followers_list'].size).to eq(17)
+        expect(result['followers_list'].size).to eq(16)
     end
 
     it 'should provide all links and infos' do
@@ -186,7 +203,7 @@ describe PinterestWebsiteScraper do
         "location" => "Berkeley, CA",
         "facebook" => "https://www.facebook.com/ryan.sammy",
         "twitter" => "",
-        "followers_count" => "916",
+        "followers_count" => "915",
         "pins" => "1794",
         "profile_name" => "Ryan Sammy"
       }

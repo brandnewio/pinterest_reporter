@@ -5,7 +5,7 @@ describe PinterestWebsiteCaller do
   describe '#initialize' do
 
     it 'has proper Faraday connection object' do
-      expect(subject.website_connection.class).to be(Faraday::Connection)
+      expect(subject.instance_variable_get(:@website_connection).class).to be(Faraday::Connection)
     end
   end
 

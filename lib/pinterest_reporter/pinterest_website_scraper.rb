@@ -10,7 +10,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     followers_list = []
     content = page.content
     content_to_parse = content.match(/{"username": "\w+?", "bookmarks":[^-]*?\]}/).to_s
-    return nil if content_to_parse.blank?
+    return nil if content_to_parse.empty?
     options = JSON.parse(content_to_parse)
     app_version = content.match(/"app_version": ".*?"/).to_s.split(":")[1].strip.match(/[^"]+/)
     if starting_page == 1
