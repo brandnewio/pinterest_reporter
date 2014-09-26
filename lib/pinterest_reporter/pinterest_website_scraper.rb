@@ -215,8 +215,16 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     html      = PinterestWebsiteCaller.new.get_profile_page(profile_name)
     page      = Nokogiri::HTML(html)
     return nil if !page.css("div[class~=errorMessage]").empty?
-    return nil if page.css("div[class~=profileImage]").css('img').empty?
-    profile_picture = page.css("div[class~=profileImage]").css('img').attribute('src').to_s
+    profile_picture = ''
+    if page.css("div[class~=profileImage]").css('img').empty?
+      if page.css("div[class~=userProfileImage]").css('img').empty?
+        return nil
+      else
+        profile_picture = page.css("div[class~=userProfileImage]").css('img').attribute('src').to_s
+      end
+    else
+      profile_picture = page.css("div[class~=profileImage]").css('img').attribute('src').to_s
+    end
     profile_picture
   end
 
@@ -243,11 +251,17 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     email           = contact_data_email(page.css("p[class~=aboutText]").text)
     website         = page.css("li[class~=websiteWrapper]").text.strip
     location        = page.css("li[class~=locationWrapper]").text.strip
+    if location.empty?
+      location = page.css("li[class~=userProfileHeaderLocationWrapper]").text.strip
+    end
     facebook        = get_facebook(page.css("//a[@class=\"facebook\"]/@href"))
     twitter         = get_twitter(page.css("//a[@class=\"twitter\"]/@href"))
     followers_count = page.css("div[class~=FollowerCount]").text.to_s.strip.split[0].tr(",", "")
     pins            = page.css("a[href~=\"/#{profile_name}/pins/\"]").text.to_s.split[0].tr(",", "")
     profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
+    if profile_name.empty?
+      location = page.css("h1[class~=userProfileHeaderName]").text.strip
+    end
     return { 'email' => email,
       'website' => website,
       'location' => location,
@@ -307,6 +321,9 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
     followers_count = page.css("div[class~=FollowerCount]").text.to_s.strip.split[0].tr(",", "")
     info_bar = page.css("div[class~=UserInfoBar]").css("div[class~=tabs]").text.to_s.strip.tr("\n"," ")
+    if info_bar.empty?
+      info_bar = page.css("div[class~=UserInfoBar]").css("ul[class~=userStats]").text.to_s.strip.tr("\n"," ")
+    end
     pins = info_bar.match(/\d?,?\d+ Pins/).to_s.split[0].tr(",","")
     likes = info_bar.match(/\d?,?\d+ Likes/).to_s.split[0].tr(",","")
     followed = info_bar.match(/\d?,?\d+ Following/).to_s.split[0].tr(",","")
