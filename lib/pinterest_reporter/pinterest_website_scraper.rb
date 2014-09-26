@@ -260,7 +260,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     pins            = page.css("a[href~=\"/#{profile_name}/pins/\"]").text.to_s.split[0].tr(",", "")
     profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
     if profile_name.empty?
-      location = page.css("h1[class~=userProfileHeaderName]").text.strip
+      profile_name = page.css("h1[class~=userProfileHeaderName]").text.strip
     end
     return { 'email' => email,
       'website' => website,
@@ -323,11 +323,17 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     info_bar = page.css("div[class~=UserInfoBar]").css("div[class~=tabs]").text.to_s.strip.tr("\n"," ")
     if info_bar.empty?
       info_bar = page.css("div[class~=UserInfoBar]").css("ul[class~=userStats]").text.to_s.strip.tr("\n"," ")
+      followed_info_bar = page.css("div[class~=UserInfoBar]").css("ul[class~=followersFollowingLinks]").text.to_s.strip.tr("\n"," ")
+      followed = followed_info_bar.match(/\d?,?\d+ Following/).to_s.split[0].tr(",","")
+    else
+      followed = info_bar.match(/\d?,?\d+ Following/).to_s.split[0].tr(",","")
     end
     pins = info_bar.match(/\d?,?\d+ Pins/).to_s.split[0].tr(",","")
     likes = info_bar.match(/\d?,?\d+ Likes/).to_s.split[0].tr(",","")
-    followed = info_bar.match(/\d?,?\d+ Following/).to_s.split[0].tr(",","")
     bio             = page.css("p[class~=aboutText]").text.to_s.strip
+    if bio.empty?
+      bio = page.css("p[class~=userProfileHeaderBio]").text.to_s.strip
+    end
     boards          = page.css("div[class~=BoardCount]").text.to_s.split[0].tr(",", "")
     return {"profile_name" => profile_name, "followers_count" => followers_count, "profile_description" => bio,
             "boards_count" => boards, "pins_count" => pins, "likes_count" => likes, "followed" => followed}
