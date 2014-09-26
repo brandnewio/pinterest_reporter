@@ -79,7 +79,7 @@ describe PinterestWebsiteScraper do
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
       "pins_count"      => "48787",
-      "followers_count" => "24571"
+      "followers_count" => "24570"
     }
   end
 
