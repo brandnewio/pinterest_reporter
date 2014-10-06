@@ -57,7 +57,7 @@ describe PinterestWebsiteScraper do
       "followers_count"     => "916",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
-      "pins_count"          => "1794",
+      "pins_count"          => "1795",
       "likes_count"         => "276",
       "followed"            => "526"
     }
@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "48787",
-      "followers_count" => "24571"
+      "pins_count"      => "48943",
+      "followers_count" => "24717"
     }
   end
 
@@ -117,7 +117,7 @@ describe PinterestWebsiteScraper do
 
     it 'returns list of all boards for profile page for helloyoga' do
         expect(subject.get_pinterest_boards(helloyoga_web_profile).size).
-          to eq(9)
+          to eq(10)
     end
 
 
@@ -204,7 +204,7 @@ describe PinterestWebsiteScraper do
         "facebook" => "https://www.facebook.com/ryan.sammy",
         "twitter" => "",
         "followers_count" => "916",
-        "pins" => "1794",
+        "pins" => "1795",
         "profile_name" => "Ryan Sammy"
       }
         result = subject.get_info_and_links('ryansammy')

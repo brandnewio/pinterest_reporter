@@ -11,6 +11,9 @@ require 'nokogiri'
 require 'oj'
 require 'excon'
 
+# PinterestReporter module (including logger)
+require 'pinterest_reporter/pinterest_reporter'
+
 # MAIN FILES
 require 'pinterest_reporter/pinterest_interactions_base'
 require 'pinterest_reporter/pinterest_website_caller'

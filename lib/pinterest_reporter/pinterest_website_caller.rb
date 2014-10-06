@@ -22,7 +22,7 @@ class PinterestWebsiteCaller < PinterestInteractionsBase
     begin
       website_connection.get(url).body
     rescue Exception => ex
-      raise "Could not fetch board #{url}. Obtained exception: #{ex.message}"
+      PinterestReporter.logger.debug("Could not fetch board #{url}. Obtained exception: #{ex.message}")
     end
   end
 
