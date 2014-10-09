@@ -83,6 +83,23 @@ describe PinterestWebsiteScraper do
     }
   end
 
+  before(:each) do
+    PinterestWebsiteCaller.any_instance.stub(:website_connection).and_return(
+      Faraday.new(url: PinterestInteractionsBase::WEB_BASE_URL) do |faraday|
+        faraday.request  :url_encoded
+        faraday.headers['Connection'] = 'keep-alive'
+        faraday.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.131 Safari/537.36'
+        faraday.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'
+        faraday.headers['Accept-Language'] = 'en-US,en;q=0.8,pl;q=0.6'
+        faraday.headers['Referer'] = 'https://www.google.pl/'
+        faraday.headers['Dnt'] = '1'
+        faraday.use FaradayMiddleware::FollowRedirects
+        faraday.use FaradayMiddleware::FollowRedirects, limit: 5
+        faraday.adapter  :net_http
+      end
+    )
+  end
+
   describe '#scrape_data_for_profile_page' do
     it 'gets the data from page' do
         expect(subject.scrape_data_for_profile_page(ryansammy_web_profile)).
