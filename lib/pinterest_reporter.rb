@@ -10,6 +10,8 @@ require 'capybara/dsl'
 require 'nokogiri'
 require 'oj'
 require 'excon'
+require 'typhoeus'
+require 'typhoeus/adapters/faraday'
 
 # PinterestReporter module (including logger)
 require 'pinterest_reporter/pinterest_reporter'
