@@ -350,8 +350,8 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     repins = page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0].value
     comments = "{" + page.content.match(/"comments": {"bookmark":.*?, "data": \[\{"text":([^\]]*)\}\]{1}/).to_s + "}}"
     comments = JSON.parse(comments)
-    comments_count = comments['comments']['data'].size.to_s
-    return {'result' => 'ok', 'likes' => likes, 'repins' => repins, 'comments' => comments_count}
+    comments_count = comments['comments']['data'].size
+    return {'result' => 'ok', 'likes' => likes.to_i, 'repins' => repins.to_i, 'comments' => comments_count}
   end
 
 private

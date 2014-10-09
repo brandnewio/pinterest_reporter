@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "48976",
-      "followers_count" => "24764"
+      "pins_count"      => "48980",
+      "followers_count" => "24765"
     }
   end
 
@@ -168,9 +168,9 @@ describe PinterestWebsiteScraper do
     it 'returns correct information with likes and repins for media file' do
       result = subject.get_image_info('pin/35747390766522571')
       expect(result['result']).to eq('ok')
-      expect(result['likes']).to eq('160')
-      expect(result['repins']).to eq('1365')
-      expect(result['comments']).to eq('3')
+      expect(result['likes']).to eq(160)
+      expect(result['repins']).to eq(1365)
+      expect(result['comments']).to eq(3)
     end
 
     it 'returns error when media file does not exist' do
