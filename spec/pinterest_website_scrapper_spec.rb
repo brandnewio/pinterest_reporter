@@ -31,7 +31,7 @@ describe PinterestWebsiteScraper do
   end
 
   let(:followben_board) do
-      PinterestWebsiteCaller.new.get_board_page_from_url("followben/man-stuff1/")
+      PinterestWebsiteCaller.new.get_board_page_from_url("jchongdesign/drinks/")
   end
 
 
@@ -54,11 +54,11 @@ describe PinterestWebsiteScraper do
   let(:expected_result_from_profile_page_scraping) do
     {
       "profile_name"        => "Ryan Sammy",
-      "followers_count"     => "916",
+      "followers_count"     => "917",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
-      "pins_count"          => "1794",
-      "likes_count"         => "278",
+      "pins_count"          => "1795",
+      "likes_count"         => "276",
       "followed"            => "526"
     }
   end
@@ -69,7 +69,7 @@ describe PinterestWebsiteScraper do
       "board_name"      => "BMW",
       "description"     => "The cars I dream about.",
       "pins_count"      => "241",
-      "followers_count" => "519"
+      "followers_count" => "520"
     }
   end
 
@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "48784",
-      "followers_count" => "24532"
+      "pins_count"      => "48976",
+      "followers_count" => "24764"
     }
   end
 
@@ -100,7 +100,7 @@ describe PinterestWebsiteScraper do
 
     it 'returns list of all boards for profile page for helloyoga' do
         expect(subject.get_pinterest_boards(helloyoga_web_profile).size).
-          to eq(9)
+          to eq(10)
     end
 
 
@@ -147,6 +147,21 @@ describe PinterestWebsiteScraper do
     end
   end
 
+  describe 'get image info' do
+    it 'returns correct information with likes and repins for media file' do
+      result = subject.get_image_info('pin/35747390766522571')
+      expect(result['result']).to eq('ok')
+      expect(result['likes']).to eq('160')
+      expect(result['repins']).to eq('1365')
+      expect(result['comments']).to eq('3')
+    end
+
+    it 'returns error when media file does not exist' do
+      result = subject.get_image_info('pin/35747390767642206')
+      expect(result['result']).to eq('error')
+    end
+  end
+
   describe "#get followers data" do
     xit "gets followers data meeting given criteria for profile name" do
       expected_result = [
@@ -186,8 +201,8 @@ describe PinterestWebsiteScraper do
         "location" => "Berkeley, CA",
         "facebook" => "https://www.facebook.com/ryan.sammy",
         "twitter" => "",
-        "followers_count" => "916",
-        "pins" => "1794",
+        "followers_count" => "917",
+        "pins" => "1795",
         "profile_name" => "Ryan Sammy"
       }
         result = subject.get_info_and_links('ryansammy')

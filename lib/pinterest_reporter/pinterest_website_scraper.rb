@@ -316,6 +316,18 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
             "boards_count" => boards, "pins_count" => pins, "likes_count" => likes, "followed" => followed}
   end
 
+  def get_image_info(media_url)
+    html = PinterestWebsiteCaller.new.get_media_file_page(media_url)
+    page = Nokogiri::HTML(html)
+    return { 'result' => 'error'} if !page.css("div[class~=errorMessage]").empty?
+    likes = page.xpath('//meta[@name="pinterestapp:likes"]/@content')[0].value
+    repins = page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0].value
+    comments = "{" + page.content.match(/"comments": {"bookmark":.*?, "data": \[\{"text":([^\]]*)\}\]{1}/).to_s + "}}"
+    comments = JSON.parse(comments)
+    comments_count = comments['comments']['data'].size.to_s
+    return {'result' => 'ok', 'likes' => likes, 'repins' => repins, 'comments' => comments_count}
+  end
+
 private
   
   def should_be_added?(data)

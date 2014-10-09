@@ -22,6 +22,10 @@ class PinterestWebsiteCaller < PinterestInteractionsBase
     @website_connection.get("/#{account_name}").body
   end
 
+  def get_media_file_page(media_file_url)
+    @website_connection.get("/#{media_file_url}").body
+  end
+
   def get_board_page(account_name, board_name)
     begin
       @website_connection.get("/#{account_name}/#{board_name.strip.downcase.tr(" ", "-")}").body
