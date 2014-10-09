@@ -166,11 +166,11 @@ describe PinterestWebsiteScraper do
 
   describe 'get image info' do
     it 'returns correct information with likes and repins for media file' do
-      result = subject.get_image_info('pin/35747390766522571')
+      result = subject.get_image_info('pin/146859637823718127')
       expect(result['result']).to eq('ok')
-      expect(result['likes']).to eq(160)
-      expect(result['repins']).to eq(1365)
-      expect(result['comments']).to eq(3)
+      expect(result['likes']).to eq(16)
+      expect(result['repins']).to eq(76)
+      expect(result['comments']).to eq(0)
     end
 
     it 'returns error when media file does not exist' do
