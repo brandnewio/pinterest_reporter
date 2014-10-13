@@ -32,7 +32,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     conn = Faraday.new(url: WEB_FETCH_FOLLOWERS_URL) do |faraday|
       faraday.request  :url_encoded
       faraday.use FaradayMiddleware::FollowRedirects
-      faraday.adapter Faraday.default_adapter
+      faraday.adapter :typhoeus
     end
 
     begin
@@ -106,7 +106,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     @conn = Faraday.new(url: WEB_FETCH_FOLLOWERS_URL) do |faraday|
       faraday.request  :url_encoded
       faraday.use FaradayMiddleware::FollowRedirects
-      faraday.adapter  Faraday.default_adapter
+      faraday.adapter  :typhoeus
     end
     begin
       context = {"app_version" => app_version, "https_exp" => false}
@@ -173,7 +173,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     @conn = Faraday.new(url: WEB_FETCH_BOARDS_URL) do |faraday|
       faraday.request  :url_encoded
       faraday.use FaradayMiddleware::FollowRedirects
-      faraday.adapter  Faraday.default_adapter
+      faraday.adapter  :typhoeus
     end
     begin
       options = JSON.parse(content.match(/\{"field_set_key": "grid_item", "username":.*?\]{1}?\}{1}/).to_s)

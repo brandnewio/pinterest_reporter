@@ -45,7 +45,7 @@ class PinterestWebsiteCaller < PinterestInteractionsBase
         faraday.headers['Referer'] = 'https://www.google.pl/'
         faraday.headers['Dnt'] = '1'
         faraday.use FaradayMiddleware::FollowRedirects
-        faraday.use FaradayMiddleware::FollowRedirects, limit: 5
+        faraday.use FaradayMiddleware::FollowRedirects, limit: 10
         faraday.adapter  :typhoeus
       end
     end

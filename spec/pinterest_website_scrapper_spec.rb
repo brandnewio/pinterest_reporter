@@ -54,7 +54,7 @@ describe PinterestWebsiteScraper do
   let(:expected_result_from_profile_page_scraping) do
     {
       "profile_name"        => "Ryan Sammy",
-      "followers_count"     => "917",
+      "followers_count"     => "919",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
       "pins_count"          => "1795",
@@ -69,7 +69,7 @@ describe PinterestWebsiteScraper do
       "board_name"      => "BMW",
       "description"     => "The cars I dream about.",
       "pins_count"      => "241",
-      "followers_count" => "520"
+      "followers_count" => "522"
     }
   end
 
@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "48980",
-      "followers_count" => "24765"
+      "pins_count"      => "49020",
+      "followers_count" => "24836"
     }
   end
 
@@ -203,7 +203,7 @@ describe PinterestWebsiteScraper do
 
     it 'should not process more followers then passed limit' do
         result = subject.get_followers(ryansammy_followers_page, 1000, 20)
-        expect(result.size).to eq(7)
+        expect(result.size).to eq(6)
     end
 
     it 'should start processing from second page of followers list' do
@@ -218,7 +218,7 @@ describe PinterestWebsiteScraper do
         "location" => "Berkeley, CA",
         "facebook" => "https://www.facebook.com/ryan.sammy",
         "twitter" => "",
-        "followers_count" => "917",
+        "followers_count" => "919",
         "pins" => "1795",
         "profile_name" => "Ryan Sammy"
       }
