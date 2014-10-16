@@ -2,6 +2,16 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
 
   EMAIL_PATTERN_MATCH = /([^@\s*]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i
 
+    InfoAndLinks = Struct.new(
+    :result,
+    :email,
+    :website,
+    :location,
+    :facebook,
+    :twitter,
+    :followers_count,
+    :pins,
+    :profile_name)
 
   def get_followers_for_cache(html, threshold, followers_to_process, starting_page)
     processed_followers = 0
@@ -247,7 +257,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
   def get_info_and_links(profile_name)
     html = PinterestWebsiteCaller.new.get_profile_page(profile_name)
     page      = Nokogiri::HTML(html)
-    return nil if !page.css("div[class~=errorMessage]").empty?
+    return InfoAndLinks.new(result: 'error') if !page.css("div[class~=errorMessage]").empty?
     email           = contact_data_email(page.css("p[class~=aboutText]").text)
     website         = page.css("li[class~=websiteWrapper]").text.strip
     location        = page.css("li[class~=locationWrapper]").text.strip
@@ -262,14 +272,8 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     if profile_name.empty?
       profile_name = page.css("h1[class~=userProfileHeaderName]").text.strip
     end
-    return { 'email' => email,
-      'website' => website,
-      'location' => location,
-      'facebook' => facebook,
-      'twitter' => twitter,
-      'followers_count' => followers_count,
-      'pins' => pins,
-      'profile_name' => profile_name }
+    return InfoAndLinks.new('ok', email, website,
+      location, facebook, twitter, followers_count, pins, profile_name )
   end
 
   def get_latest_pictures_from_board(html)

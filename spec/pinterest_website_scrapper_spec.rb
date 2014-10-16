@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "49020",
-      "followers_count" => "24836"
+      "pins_count"      => "49049",
+      "followers_count" => "24856"
     }
   end
 
@@ -212,16 +212,9 @@ describe PinterestWebsiteScraper do
     end
 
     it 'should provide all links and infos' do
-      expected_result = {
-        "email" => "",
-        "website" => "www.ryansammy.com",
-        "location" => "Berkeley, CA",
-        "facebook" => "https://www.facebook.com/ryan.sammy",
-        "twitter" => "",
-        "followers_count" => "919",
-        "pins" => "1795",
-        "profile_name" => "Ryan Sammy"
-      }
+      expected_result = PinterestWebsiteScraper::InfoAndLinks.new(
+        'ok', "", "www.ryansammy.com", "Berkeley, CA", "https://www.facebook.com/ryan.sammy",
+        "", "919", "1795", "Ryan Sammy")
         result = subject.get_info_and_links('ryansammy')
         expect(result).to eq(expected_result)
     end
