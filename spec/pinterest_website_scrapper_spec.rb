@@ -214,7 +214,7 @@ describe PinterestWebsiteScraper do
     it 'should provide all links and infos' do
       expected_result = PinterestWebsiteScraper::InfoAndLinks.new(
         'ok', "", "www.ryansammy.com", "Berkeley, CA", "https://www.facebook.com/ryan.sammy",
-        "", "919", "1795", "Ryan Sammy")
+        "", "923", "1795", "Ryan Sammy")
         result = subject.get_info_and_links('ryansammy')
         expect(result).to eq(expected_result)
     end

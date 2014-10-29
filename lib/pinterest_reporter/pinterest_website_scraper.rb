@@ -266,8 +266,8 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     end
     facebook        = get_facebook(page.css("//a[@class=\"facebook\"]/@href"))
     twitter         = get_twitter(page.css("//a[@class=\"twitter\"]/@href"))
-    followers_count = page.css("div[class~=FollowerCount]").text.to_s.strip.split[0].tr(",", "")
-    pins            = page.css("a[href~=\"/#{profile_name}/pins/\"]").text.to_s.split[0].tr(",", "")
+    followers_count = page.xpath('//meta[@name="pinterestapp:followers"]/@content')[0].value
+    pins            = page.xpath('//meta[@name="pinterestapp:pins"]/@content')[0].value
     profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
     if profile_name.empty?
       profile_name = page.css("h1[class~=userProfileHeaderName]").text.strip
