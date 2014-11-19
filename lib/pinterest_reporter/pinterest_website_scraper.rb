@@ -244,7 +244,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     return nil if !board_page.content.match(/Follow Board/)
     board_name      = board_page.css("h1[class~=boardName]").text.strip
     full_name       = board_page.css("h4[class~=fullname]").text.strip
-    description     = board_page.xpath("/html/body/div[1]/div[2]/div[1]/div[2]/div[1]/p/text()").to_s.strip
+    description     = board_page.css("div[class~=boardHeaderWrapper]").css("p[class~=description]").text.strip
     followers_count = board_page.content.match(/"followers": "\d+"/).to_s.split(':')[1].strip.tr("\"","")
     pins_count      = board_page.content.match(/"pinterestapp:pins": "\d+"/).to_s.split(':')[2].strip.tr("\"","")
     return { "owner_name" => full_name,
@@ -268,7 +268,9 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     twitter         = get_twitter(page.css("//a[@class=\"twitter\"]/@href"))
     followers_count = page.xpath('//meta[@name="pinterestapp:followers"]/@content')[0].value
     pins            = page.xpath('//meta[@name="pinterestapp:pins"]/@content')[0].value
-    profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
+    profile_name    = page.css("div[class~=about]").css("div[class~=name]").text.strip
+    #xpath('//meta[@name="og:title"]/@content')[0].value
+    #page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
     if profile_name.empty?
       profile_name = page.css("h1[class~=userProfileHeaderName]").text.strip
     end
@@ -322,7 +324,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
   def scrape_data_for_profile_page(html)
     page  =  Nokogiri::HTML(html)
     return nil if !page.css("div[class~=errorMessage]").empty?
-    profile_name    = page.css("div[class~=titleBar]").css("div[class~=name]").text.to_s.strip
+    profile_name    = page.css("div[class~=aboutBar]").css("div[class~=about]").css("div[class~=name]").text.to_s.strip
     if profile_name.empty?
       profile_name = page.css("h1[class~=userProfileHeaderName]").text.strip
     end
@@ -349,7 +351,7 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
   def get_image_info(media_url)
     html = PinterestWebsiteCaller.new.get_media_file_page(media_url)
     page = Nokogiri::HTML(html)
-    return { 'result' => 'error'} if !page.css("div[class~=errorMessage]").empty?
+    return { 'result' => 'error'} if image_data_present?(page)
     likes = page.xpath('//meta[@name="pinterestapp:likes"]/@content')[0].value
     repins = page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0].value
     comments = page.content.match(/("comment_count": \d+){1}/).to_s
@@ -358,7 +360,13 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
   end
 
 private
-  
+
+  def image_data_present?(page)
+    !page.css("div[class~=errorMessage]").empty? ||
+    page.xpath('//meta[@name="pinterestapp:likes"]/@content')[0].blank? ||
+    page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0].blank?
+  end
+
   def should_be_added?(data)
     !data['email'].empty? || !data['facebook'].empty? || !data['website'].empty? || !data['twitter'].empty?
   end
