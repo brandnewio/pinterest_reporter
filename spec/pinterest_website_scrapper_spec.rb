@@ -138,7 +138,7 @@ describe PinterestWebsiteScraper do
   describe 'get profile picture' do
     it 'returns link to profile picture' do
       result = subject.get_profile_picture('ryansammy')
-      expect(result).to eq('http://s-media-cache-ak0.pinimg.com/avatars/ryansammy_1365793703_140.jpg')
+      expect(result.include?('ryansammy_1365793703_140.jpg')).to be true
     end
   end
 
