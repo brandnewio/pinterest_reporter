@@ -351,20 +351,20 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
   def get_image_info(media_url)
     html = PinterestWebsiteCaller.new.get_media_file_page(media_url)
     page = Nokogiri::HTML(html)
-    return { 'result' => 'error'} if image_data_present?(page)
-    likes = page.xpath('//meta[@name="pinterestapp:likes"]/@content')[0].value
-    repins = page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0].value
+    likes = page.xpath('//meta[@name="pinterestapp:likes"]/@content')[0]
+    repins = page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0]
+    return { 'result' => 'error'} if image_data_present?(page, likes, repins)
     comments = page.content.match(/("comment_count": \d+){1}/).to_s
     comments_count = comments.split(':')[1].strip.to_i
-    return {'result' => 'ok', 'likes' => likes.to_i, 'repins' => repins.to_i, 'comments' => comments_count}
+    return {'result' => 'ok', 'likes' => likes.value.to_i, 'repins' => repins.value.to_i, 'comments' => comments_count}
   end
 
 private
 
-  def image_data_present?(page)
+  def image_data_present?(page, likes, repins)
     !page.css("div[class~=errorMessage]").empty? ||
-    page.xpath('//meta[@name="pinterestapp:likes"]/@content')[0].blank? ||
-    page.xpath('//meta[@name="pinterestapp:repins"]/@content')[0].blank?
+    likes.blank? ||
+    repins.blank?
   end
 
   def should_be_added?(data)
