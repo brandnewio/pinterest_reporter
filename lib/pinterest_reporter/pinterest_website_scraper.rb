@@ -169,7 +169,11 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     board_data = Hash.new
     content = page.content
     scrubbed_user = JSON.parse(content.match(/\{"gaAccountNumbers":.*\}/).to_s)
-    json_boards = scrubbed_user['tree']['children'][3]['children'][3]['children'][0]['children'][0]['children'][0]['children']
+    if scrubbed_user['tree']['children'][3]['children'].size == 0
+      json_boards = scrubbed_user['tree']['children'][2]['children'][3]['children'][0]['children'][0]['children'][0]['children']
+    else
+      json_boards = scrubbed_user['tree']['children'][3]['children'][3]['children'][0]['children'][0]['children'][0]['children']
+    end
     json_boards.each do |board|
       partial_board_data = board['children'][0]['options']
       if board['children'][0]['options']['title_text'].nil?
