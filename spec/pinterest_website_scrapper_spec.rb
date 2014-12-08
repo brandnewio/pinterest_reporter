@@ -54,12 +54,12 @@ describe PinterestWebsiteScraper do
   let(:expected_result_from_profile_page_scraping) do
     {
       "profile_name"        => "Ryan Sammy",
-      "followers_count"     => "923",
+      "followers_count"     => "924",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
       "pins_count"          => "1792",
       "likes_count"         => "276",
-      "followed"            => "526"
+      "followed"            => "525"
     }
   end
 
@@ -78,8 +78,8 @@ describe PinterestWebsiteScraper do
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
       "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "49316",
-      "followers_count" => "25255"
+      "pins_count"      => "49541",
+      "followers_count" => "25433"
     }
   end
 
@@ -214,7 +214,7 @@ describe PinterestWebsiteScraper do
     it 'should provide all links and infos' do
       expected_result = PinterestWebsiteScraper::InfoAndLinks.new(
         'ok', "", "www.ryansammy.com", "Berkeley, CA", "https://www.facebook.com/ryan.sammy",
-        "", "923", "1792", "Ryan Sammy")
+        "", "924", "1792", "Ryan Sammy")
         result = subject.get_info_and_links('ryansammy')
         expect(result).to eq(expected_result)
     end
