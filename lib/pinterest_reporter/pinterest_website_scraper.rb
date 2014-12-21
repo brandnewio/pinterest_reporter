@@ -249,8 +249,8 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
     board_name      = board_page.css("h1[class~=boardName]").text.strip
     full_name       = board_page.css("h4[class~=fullname]").text.strip
     description     = board_page.css("div[class~=boardHeaderWrapper]").css("p[class~=description]").text.strip
-    followers_count = board_page.content.match(/"followers": "\d+"/).to_s.split(':')[1].strip.tr("\"","")
-    pins_count      = board_page.content.match(/"pinterestapp:pins": "\d+"/).to_s.split(':')[2].strip.tr("\"","")
+    followers_count = board_page.content.match(/"follower_count": \d+/).to_s.split(':')[1].strip.tr("\"","")
+    pins_count      = board_page.content.match(/"pin_count": \d+/).to_s.split(':')[1].strip.tr("\"","")
     return { "owner_name" => full_name,
       "board_name" => board_name,
       "description" => description,
