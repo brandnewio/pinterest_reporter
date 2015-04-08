@@ -244,13 +244,14 @@ class PinterestWebsiteScraper < PinterestInteractionsBase
 
   def get_board_information(html)
     board_page      = Nokogiri::HTML(html)
-
-    return nil if !board_page.content.match(/Follow Board/)
+    
+    return nil if !board_page.content.match(/Follow board/)
     board_name      = board_page.css("h1[class~=boardName]").text.strip
     full_name       = board_page.css("h4[class~=fullname]").text.strip
     description     = board_page.css("div[class~=boardHeaderWrapper]").css("p[class~=description]").text.strip
     followers_count = board_page.content.match(/"follower_count": \d+/).to_s.split(':')[1].strip.tr("\"","")
     pins_count      = board_page.content.match(/"pin_count": \d+/).to_s.split(':')[1].strip.tr("\"","")
+
     return { "owner_name" => full_name,
       "board_name" => board_name,
       "description" => description,

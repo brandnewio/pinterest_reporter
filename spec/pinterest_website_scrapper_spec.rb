@@ -53,13 +53,13 @@ describe PinterestWebsiteScraper do
 
   let(:expected_result_from_profile_page_scraping) do
     {
-      "profile_name"        => "Ryan Sammy",
-      "followers_count"     => "920",
+      "profile_name"        => "",
+      "followers_count"     => "946",
       "profile_description" => "Food lover, Craft Beer Enthusiast, and BMW fanatic.",
       "boards_count"        => "83",
       "pins_count"          => "1791",
-      "likes_count"         => "276",
-      "followed"            => "525"
+      "likes_count"         => "275",
+      "followed"            => "524"
     }
   end
 
@@ -69,7 +69,7 @@ describe PinterestWebsiteScraper do
       "board_name"      => "BMW",
       "description"     => "The cars I dream about.",
       "pins_count"      => "241",
-      "followers_count" => "525"
+      "followers_count" => "538"
     }
   end
 
@@ -77,9 +77,9 @@ describe PinterestWebsiteScraper do
     {
       "owner_name"      => "",
       "board_name"      => "Men Clothing",
-      "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted.    carlapin50@gmail.com",
-      "pins_count"      => "49683",
-      "followers_count" => "25566"
+      "description"     => "Welcome to this board and many thanks for all your contributions. Men's clothing only. Constant repins will be deleted. Pins without source links will be deleted. Please do not invite to this board.",
+      "pins_count"      => "51478",
+      "followers_count" => "26649"
     }
   end
 
@@ -112,12 +112,12 @@ describe PinterestWebsiteScraper do
 
     it 'returns list of all boards for profile page' do
       expect(subject.get_pinterest_boards(maryannrizzo_web_profile).size).
-          to eq(272)
+          to eq(273)
     end
 
     it 'returns list of all boards for profile page for helloyoga' do
         expect(subject.get_pinterest_boards(helloyoga_web_profile).size).
-          to eq(10)
+          to eq(1)
     end
 
 
@@ -168,7 +168,7 @@ describe PinterestWebsiteScraper do
     it 'returns correct information with likes and repins for media file' do
       result = subject.get_image_info('pin/146859637823718127')
       expect(result['result']).to eq('ok')
-      expect(result['likes']).to eq(16)
+      expect(result['likes']).to eq(17)
       expect(result['repins']).to eq(76)
       expect(result['comments']).to eq(0)
     end
@@ -203,18 +203,26 @@ describe PinterestWebsiteScraper do
 
     it 'should not process more followers then passed limit' do
         result = subject.get_followers(ryansammy_followers_page, 1000, 20)
-        expect(result.size).to eq(8)
+        expect(result.size).to eq(11)
     end
 
     it 'should start processing from second page of followers list' do
         result = subject.get_followers_for_cache(ryansammy_followers_page, 10000, 200, 2)
-        expect(result['followers_list'].size).to eq(17)
+        expect(result['followers_list'].size).to eq(20)
     end
 
     it 'should provide all links and infos' do
       expected_result = PinterestWebsiteScraper::InfoAndLinks.new(
-        'ok', "", "www.ryansammy.com", "Berkeley, CA", "https://www.facebook.com/ryan.sammy",
-        "", "920", "1791", "Ryan Sammy")
+        'ok',
+        "",
+        "www.ryansammy.com",
+        "Berkeley, CA",
+        "https://www.facebook.com/ryan.sammy",
+        "http://twitter.com/RyanSammy",
+        "946",
+        "1791",
+        ""
+      )
         result = subject.get_info_and_links('ryansammy')
         expect(result).to eq(expected_result)
     end
